@@ -186,9 +186,27 @@ int16_t getVoltage(uint8_t element) {
  return ri_voltages[i];
 }
 
+int16_t getPower_kW(uint8_t element) {
+ uint16_t u,i;
+ int32_t p;
+  i = getCurrent(element); /* in 0.1A */
+  u = getVoltage(element); /* in 0.1V */
+  p= u*i;
+  p/=100;
+  p/=1000; /* Watt to kW */
+  return p; /* in kW */
+}
+
 #define LOW_CURRENT 20*10 /* 20A in LSB=0.1A */
-#define HIGH_CURRENT_MIN 210*10 /* 210A */
+
+/* for the high-current, the range 210A to 320A works fine for a warm (>10°C) battery. But e.g. for 5°C and 10% SOC we have power limitation,
+so the 210A are not reached.
+For e.g. 50kW and 330V we have 151A.
+For e.g. 60kW and 330V we have 181A.
+*/
+#define HIGH_CURRENT_MIN 150*10 /* 150A */
 #define HIGH_CURRENT_MAX 320*10 /* 320A */
+#define POWER_TOLERANCE 10 /* kW tolerated deviation between the two high-power samples */
 
 
 /* based on the queue content, calculate the internal resistance of the battery. */
@@ -198,6 +216,7 @@ int16_t getVoltage(uint8_t element) {
    So the function has the chance to process the data after complete reception of one message and sure before the reception of the next message. */
 void calculateRi(void) {
   uint8_t blCalculationTrigger;
+  int16_t pCompare_kW;
 
   if (!blIsNewSampleAvailable) return; /* directly leave, if there is nothing to do. */
   blIsNewSampleAvailable=0; /* consume the data */
@@ -214,7 +233,10 @@ void calculateRi(void) {
       if (inrange(getCurrent(1), -LOW_CURRENT, LOW_CURRENT)) { /* second sample must be low current. */
         if (inrange(getCurrent(RI_N_QUEUE_LEN-1), HIGH_CURRENT_MIN, HIGH_CURRENT_MAX)) {
           if (inrange(getCurrent(RI_N_QUEUE_LEN-2), HIGH_CURRENT_MIN, HIGH_CURRENT_MAX)) { /* last two samples must be high current */
-			blCalculationTrigger=1;
+		    pCompare_kW = getPower_kW(RI_N_QUEUE_LEN-1);
+		    if (inrange(getPower_kW(RI_N_QUEUE_LEN-2), pCompare_kW - POWER_TOLERANCE, pCompare_kW + POWER_TOLERANCE)) { /* both high-power-samples must be similar */
+			  blCalculationTrigger=1;
+            }
 		  }
 	    }
 	  }
@@ -225,7 +247,10 @@ void calculateRi(void) {
       if (inrange(getCurrent(1), HIGH_CURRENT_MIN, HIGH_CURRENT_MAX)) { /* second sample must be high current. */
         if (inrange(getCurrent(RI_N_QUEUE_LEN-1), -LOW_CURRENT, LOW_CURRENT)) {
           if (inrange(getCurrent(RI_N_QUEUE_LEN-2), -LOW_CURRENT, LOW_CURRENT)) { /* last two samples must be low current */
-			blCalculationTrigger=1;
+		    pCompare_kW = getPower_kW(0);
+		    if (inrange(getPower_kW(1), pCompare_kW - POWER_TOLERANCE, pCompare_kW + POWER_TOLERANCE)) { /* both high-power-samples must be similar */
+			  blCalculationTrigger=1;
+            }
 		  }
 	    }
 	  }
