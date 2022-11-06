@@ -20,13 +20,13 @@
 ATMega32, MCP2515 CAN controller via SPI, MCP2551 CAN transceiver
 
 # Change Log:
-- 2022-08-30
--- newly created (based on ESP32 arduino code and hausbus project)
-- 2022-08-31
--- added Ri calculation
-- 2022-11-06
--- collected all lib files in the main directory, to have a complete bundle
--- added to github.com/uhi22/IoniqMotorCAN
+## 2022-08-30
+- newly created (based on ESP32 arduino code and hausbus project)
+## 2022-08-31
+- added Ri calculation
+## 2022-11-06
+- collected all lib files in the main directory, to have a complete bundle
+- added to github.com/uhi22/IoniqMotorCAN
 
 # Todo
 * There are some cases, where the EEPROM write is interrupted by power-loss. Solve the dataloss, e.g. by
