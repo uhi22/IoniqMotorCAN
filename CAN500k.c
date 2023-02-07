@@ -395,7 +395,12 @@ void careForEepromWrite(void) {
   if (blIsStartedUp) {
       blIsStartedUp = 0;
       safestruct.fields.startupCount++;
-      blTriggerEepromWrite = 1;
+	  /* we could trigger the writing directly in case of startup. But this has the risk,
+	  that due to a power-bounce we lose the power during startup, and destroy the
+	  EEPROM content. That's why we do not set blTriggerEepromWrite = 1 here. Instead,
+	  the write happens only in case of timeout of the BMS message, where we still have
+	  sufficient time until the power drops. (The delay between CAN sleep and power down is
+	  controlled by hardware circuit). */
   }
 
   if (timeoutcounter_595==0) {
