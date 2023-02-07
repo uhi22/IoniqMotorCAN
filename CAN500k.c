@@ -83,15 +83,15 @@ union {
   uint8_t bytes[EEPROM_SIZE];
   struct {
     uint16_t marker;
-    uint16_t startupCount;
     uint16_t writeCount;
     int32_t EDrive;
     int32_t ECharge;
+    uint16_t marker2;
   } fields;
 } safestruct;
 
 uint8_t eePlaceholder[EEPROM_SIZE] EEMEM; /* to have an symbolic name for the eeprom */
-#define EE_MARKER 12345
+#define EE_MARKER 12346
 
 /***********************************************************/
 /* For Ri calculation */
@@ -367,14 +367,14 @@ void readEeprom(void) {
 }
 
 void checkEepromConsistency(void) {
-  if (safestruct.fields.marker != EE_MARKER) {
+  if ((safestruct.fields.marker != EE_MARKER) || (safestruct.fields.marker2 != EE_MARKER)) {
     //Serial.println("EE is invalid. Initializing.");
 	printConsoleString_p(PSTR("EE is invalid.\x0D\x0A"));
     safestruct.fields.marker = EE_MARKER;
     safestruct.fields.writeCount=1;
-    safestruct.fields.startupCount=1;
     safestruct.fields.EDrive = 0;
     safestruct.fields.ECharge = 0;
+	safestruct.fields.marker2 = EE_MARKER;
     blTriggerEepromWrite = 1;
   }  
 }
@@ -394,7 +394,7 @@ void writeEeprom(void) {
 void careForEepromWrite(void) {
   if (blIsStartedUp) {
       blIsStartedUp = 0;
-      safestruct.fields.startupCount++;
+      //safestruct.fields.startupCount++;
 	  /* we could trigger the writing directly in case of startup. But this has the risk,
 	  that due to a power-bounce we lose the power during startup, and destroy the
 	  EEPROM content. That's why we do not set blTriggerEepromWrite = 1 here. Instead,
