@@ -87,11 +87,13 @@ union {
     int32_t EDrive;
     int32_t ECharge;
     uint16_t marker2;
+	uint16_t aux;
   } fields;
 } safestruct;
 
 uint8_t eePlaceholder[EEPROM_SIZE] EEMEM; /* to have an symbolic name for the eeprom */
-#define EE_MARKER 12346
+#define EEPROM_ADDRESS (eePlaceholder+0x10) /* try another address */
+#define EE_MARKER 0x55CC
 
 /***********************************************************/
 /* For Ri calculation */
@@ -348,7 +350,7 @@ void countTimeouts(void) {
  *
  *******************************************************************/
 void readEeprom(void) {
-  eeprom_read_block(safestruct.bytes, eePlaceholder, EEPROM_SIZE);
+  eeprom_read_block(safestruct.bytes, EEPROM_ADDRESS, EEPROM_SIZE);
   /*
   Serial.print("EE marker ");
   Serial.println(safestruct.fields.marker);
@@ -371,10 +373,11 @@ void checkEepromConsistency(void) {
     //Serial.println("EE is invalid. Initializing.");
 	printConsoleString_p(PSTR("EE is invalid.\x0D\x0A"));
     safestruct.fields.marker = EE_MARKER;
-    safestruct.fields.writeCount=1;
+    safestruct.fields.writeCount=0;
     safestruct.fields.EDrive = 0;
     safestruct.fields.ECharge = 0;
 	safestruct.fields.marker2 = EE_MARKER;
+	safestruct.fields.aux = 0xdead;
     blTriggerEepromWrite = 1;
   }  
 }
@@ -386,9 +389,25 @@ void transferEepromToApplication(void) {
 
 void writeEeprom(void) {
   /* Attention: this may take some milliseconds */
-  eeprom_write_block(safestruct.bytes, eePlaceholder, EEPROM_SIZE);
+  eeprom_write_block(safestruct.bytes, EEPROM_ADDRESS, EEPROM_SIZE);
   //Serial.println("EE persisted");
   printConsoleString_p(PSTR("persisted\x0D\x0A"));
+}
+
+void findFreeLogPlaceAndLog(void) {
+ /* For debugging, add the EE data into a list, as long as we find free places. */
+ uint16_t offset; /* The address in the EEPROM. */
+ uint16_t tempU16;
+ for (offset=0x20; offset<0x3E0; offset+=0x10) {
+ 	eeprom_read_block(&tempU16, eePlaceholder+offset, 2);
+	if (tempU16!=EE_MARKER) {
+		/* We found an unused entry. */
+		/* Write the data into this 16-byte-entry: */
+  		/* Attention: this may take some milliseconds */
+  		eeprom_write_block(safestruct.bytes, eePlaceholder+offset, EEPROM_SIZE);
+		return; /* stop the search loop */
+	}
+ }
 }
 
 void careForEepromWrite(void) {
@@ -415,6 +434,7 @@ void careForEepromWrite(void) {
   
   if (blTriggerEepromWrite) {
     safestruct.fields.writeCount++;
+    findFreeLogPlaceAndLog();
     writeEeprom();
     blTriggerEepromWrite = 0;
   }
@@ -622,38 +642,55 @@ int main (void) {
 	_delay_ms(100);
 	LED_aus();
 	_delay_ms(100);
+	//LED_an();
+	//_delay_ms(300);
+	//LED_aus();
+	//_delay_ms(100);
 	LED_an();
 	_delay_ms(100);
 	LED_aus();
 	// Interrupts enable
 	sei();
 	while(1) {
-		
+
 		if (isrFlag5ms) {
 			isrFlag5ms=0;
 			
 			//candrvF_cyclic();
 			divider1s++;
 			if (divider1s>=200) {
-			  /* einmal pro Sekunde */
+			  /* Timing remark: The timing is NOT exact in this project, because during transmission of the serial data,
+			     we do not evaluate the isrFlag5ms, and not count the divider1s. This means, a certain number of
+				 5ms ticks will be missed in the one-second-calculation, and the calculated 1s will be slower than the
+				 real one second. In this project, this behavior does not matter, because the power-integral will be done
+				 anyway based on the 100ms CAN message cycle. But if the one-second calculation will be used for other
+				 precice things, we need to make an improvement here! */
+			  /* once per second */
+
 			  divider1s=0;
 			  uptime_s++;
+			  safestruct.fields.aux=uptime_s;
 			  if (ri_transmitEnableCounter_s>0) ri_transmitEnableCounter_s--;
 			  if ((uptime_s % 10)==0) {
 			    /* every 10s */
 				//integration test
 			  	//ri_mOhm=uptime_s/10;
 			    //ri_addResultToResultList();
+				/* For testing, simulate updated energy: */
+				//PIntegralCharge_Wh +=0x1100;
+				//LED_an();
+				//_delay_ms(50);
+				//LED_aus();
 			  }
 			  //candrvF_sendMessageBuffer(MESSAGE_ID_TEST, message_TEST.c.c);
 			}
 			if ((divider1s % 100)==0) {
-			  /* zweimal pro Sekunde */
+			  /* twice per second */
 			  printForOLED();
               careForEepromWrite();
 			}
 			if ((divider1s % 50)==0) {
-			  /* viermal pro Sekunde */
+			  /* four times per second */
 			  countTimeouts();
 			  ODO_0km1 = message_5D0.s.ODO_H;
 			  ODO_0km1 <<= 8;
