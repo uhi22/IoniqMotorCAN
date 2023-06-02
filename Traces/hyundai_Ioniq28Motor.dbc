@@ -211,6 +211,21 @@ BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
  SG_ VS : 0|8@1+ (1,0) [0|255] "km/h" Vector__XXX
  SG_ SWI_IGK : 0|1@0+ (1,0) [0|1] "" Vector__XXX
 
+BO_ 1433 uwe599: 8 Vector__XXX
+ SG_ uwe599_2_SocDisp : 16|8@1+ (0.5,0) [0|100] "%" Vector__XXX
+ SG_ CCS_trigger : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1513 CCM_5E9: 8 Vector__XXX
+ SG_ CCM_togglebit : 0|1@1- (1,0) [0|1] "" Vector__XXX
+
+BO_ 1512 CCM_5E8: 8 Vector__XXX
+
+BO_ 1510 CCM_5E6: 8 Vector__XXX
+ SG_ CCM_CCS_started : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ CCM_CCS_error : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1509 CCM_5E5: 8 Vector__XXX
+
 BO_ 1383 CLOCK: 8 Vector__XXX
  SG_ clock_valid : 32|8@1- (1,0) [0|0] "" Vector__XXX
  SG_ clock_second : 24|8@1- (1,0) [0|0] "" Vector__XXX
