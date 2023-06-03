@@ -225,7 +225,7 @@ BO_ 1513 CCM_5E9: 8 Vector__XXX
 BO_ 1512 CCM_5E8: 8 Vector__XXX
 
 BO_ 1510 CCM_5E6: 8 Vector__XXX
- SG_ CCM_CCS_started : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ CCM_CCS_TCP_connected : 0|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ CCM_CCS_ended : 1|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1509 CCM_5E5: 8 Vector__XXX
@@ -580,6 +580,7 @@ BO_ 1430 uwe596: 8 Vector__XXX
 
 CM_ "BO_ E_EMS11: All (plug-in) hybrids use this gas signal: CR_Vcu_AccPedDep_Pos, and all EVs use the Accel_Pedal_Pos signal. See hyundai/values.py for a specific car list";
 CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+CM_ SG_ 1510 CCM_CCS_TCP_connected "The CCM sets this signal to 1 if the TCP connection is established. (This means, after the SLAC and SDP, when the TCP handshake was successful.)";
 VAL_ 3221225472 CF_Lvr_Gear 5 "D" 8 "S" 6 "N" 7 "R" 0 "P" ;
 VAL_ 3221225472 CF_VSM_Warn 2 "FCW" 3 "AEB" ;
 VAL_ 3221225472 ACCMode 0 "off" 1 "enabled" 2 "driver_override" 3 "off_maybe_fault" 4 "cancelled" ;
