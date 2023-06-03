@@ -34,6 +34,7 @@ NS_ :
 BS_:
 
 BU_: CGW
+VAL_TABLE_ ValueTableChargeProgress 127 "WeldingDetection" 63 "PowerDeliveryStop" 31 "CurrentDemand" 7 "PreCharge" 3 "CableCheck" ;
 
 
 BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
@@ -212,19 +213,24 @@ BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
  SG_ SWI_IGK : 0|1@0+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1433 uwe599: 8 Vector__XXX
+ SG_ CCS_end_ack : 63|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ CCS_CHARGE_TRIGGER : 57|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ uwe599_2_SocDisp : 16|8@1+ (0.5,0) [0|100] "%" Vector__XXX
- SG_ CCS_trigger : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ CCS_COMMS_TRIGGER : 56|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1513 CCM_5E9: 8 Vector__XXX
+ SG_ CCM_ChargeProgess : 1|7@1+ (1,0) [0|127] "" Vector__XXX
  SG_ CCM_togglebit : 0|1@1- (1,0) [0|1] "" Vector__XXX
 
 BO_ 1512 CCM_5E8: 8 Vector__XXX
 
 BO_ 1510 CCM_5E6: 8 Vector__XXX
  SG_ CCM_CCS_started : 0|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ CCM_CCS_error : 1|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ CCM_CCS_ended : 1|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1509 CCM_5E5: 8 Vector__XXX
+ SG_ CCM_PresentCurrent : 48|16@1- (0.1,0) [0|1000] "" Vector__XXX
+ SG_ CCM_PresentVoltage : 32|16@1- (0.1,0) [0|500] "" Vector__XXX
 
 BO_ 1383 CLOCK: 8 Vector__XXX
  SG_ clock_valid : 32|8@1- (1,0) [0|0] "" Vector__XXX
@@ -578,4 +584,5 @@ VAL_ 3221225472 CF_Lvr_Gear 5 "D" 8 "S" 6 "N" 7 "R" 0 "P" ;
 VAL_ 3221225472 CF_VSM_Warn 2 "FCW" 3 "AEB" ;
 VAL_ 3221225472 ACCMode 0 "off" 1 "enabled" 2 "driver_override" 3 "off_maybe_fault" 4 "cancelled" ;
 VAL_ 3221225472 Elect_Gear_Shifter 5 "D" 8 "S" 6 "N" 7 "R" 0 "P" ;
+VAL_ 1513 CCM_ChargeProgess 127 "WeldingDetection" 63 "PowerDeliveryStop" 31 "CurrentDemand" 7 "PreCharge" 3 "CableCheck" ;
 
