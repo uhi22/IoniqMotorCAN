@@ -213,6 +213,28 @@ BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
  SG_ SWI_IGK : 0|1@0+ (1,0) [0|1] "" Vector__XXX
  SG_ CF_Gway_DDMDiagState : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
+BO_ 1495 uwe5D7_CCS_Handshake: 8 Vector__XXX
+ SG_ uwe5D7_1_ContactorClosed : 12|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ uwe5D7_1_CcsStart : 11|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ uwe5D7_1_CCS_firstTrigger : 14|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ uwe5D7_6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ uwe5D7_4_remainingTimeBulk : 32|16@1+ (1,0) [0|10000] "s" Vector__XXX
+ SG_ uwe5D7_1_PreChCnf : 9|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ uwe5D7_0_ConnectorLockConfirm : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 513 uwe201: 8 Vector__XXX
+ SG_ uwe201_analog3_4 : 24|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ uwe201_analog1_2 : 8|16@1- (1,0) [-32768|32767] "" Vector__XXX
+ SG_ uwe201_alive7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ uwe201_alive0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1426 uwe592: 8 Vector__XXX
+ SG_ uwe592_07_status : 56|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ uwe592_07_aliveCounter : 62|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ uwe592_06_analog : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ uwe592_02_analog : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ uwe592_01_status : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
 BO_ 1171 uwe493: 8 Vector__XXX
  SG_ uwe493_6_7_downwards : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
 
@@ -577,9 +599,6 @@ BO_ 512 EMS20: 6 Vector__XXX
  SG_ CF_Ems_PumpTPres : 16|8@1+ (3.137254902,0) [0|800] "kPa" Vector__XXX
  SG_ Split_Stat : 32|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 1426 LABEL11: 8 Vector__XXX
- SG_ CC_React : 34|1@1+ (1,0) [0|1] "" Vector__XXX
-
 BO_ 1430 uwe596: 8 Vector__XXX
  SG_ uwe596_7_TAkkuH : 56|8@1+ (1,0) [0|255] "°C" Vector__XXX
  SG_ uwe596_6_TAkkuL : 48|8@1+ (1,0) [0|255] "°C" Vector__XXX
@@ -591,6 +610,10 @@ BO_ 1430 uwe596: 8 Vector__XXX
 
 CM_ "BO_ E_EMS11: All (plug-in) hybrids use this gas signal: CR_Vcu_AccPedDep_Pos, and all EVs use the Accel_Pedal_Pos signal. See hyundai/values.py for a specific car list";
 CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+CM_ SG_ 1495 uwe5D7_4_remainingTimeBulk "The time until the bulk charging is finished.";
+CM_ SG_ 1495 uwe5D7_1_PreChCnf "changes from 0 to 1 shortly before the CCM_ChargeProgress ends the PreCharge phase.";
+CM_ SG_ 1426 uwe592_06_analog "analog value which changes during driving, but neither speed nor current";
+CM_ SG_ 1426 uwe592_02_analog "analog value which changes during driving, but neither speed nor current";
 CM_ SG_ 1171 uwe493_6_7_downwards "Goes down during CCS charging. Something like time-until-full or energy-until-full.";
 CM_ SG_ 1431 uwe597_01_down "Goes down during CCS charging. Something like time-until-full or energy-until-full. Is a lower-resolution variant of 0x493.6_7.";
 CM_ SG_ 1433 CCS_EvMaximumVoltageLimit "This signal from the BMS is used by the CCM, which sends it via PLC to the charger, in ChargeParameterDiscoveryReq.EVMaximumVoltageLimit.";
