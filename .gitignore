@@ -4,3 +4,8 @@
 *.asc
 *.cfg
 *.stcfg
+
+!Traces/Logging126_twoTimes_withPyPlcIntoTheChargingLoop.asc
+!Traces/Logging127_twoTimes_withPyPlcSuppressedChargeParamDiscoveryResponse.asc
+!Traces/Logging128_twoTimes_withPyPlcSuppressedCableCheckResp_ChargeportLockOk.asc
+

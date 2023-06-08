@@ -211,6 +211,7 @@ BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
  SG_ TQI_2 : 0|8@1+ (0.390625,0) [0|99.6094] "%" Vector__XXX
  SG_ VS : 0|8@1+ (1,0) [0|255] "km/h" Vector__XXX
  SG_ SWI_IGK : 0|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ CF_Gway_DDMDiagState : 0|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1171 uwe493: 8 Vector__XXX
  SG_ uwe493_6_7_downwards : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -412,8 +413,8 @@ BO_ 1407 HU_MON_PE_01: 8 Vector__XXX
  SG_ HU_Type : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 1363 CGW2: 8 Vector__XXX
+ SG_ chargePortFlapOpen : 1|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ CF_Gway_GwayDiagState : 0|1@1+ (1,0) [0|3] "" Vector__XXX
- SG_ CF_Gway_DDMDiagState : 1|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ CF_Gway_SCMDiagState : 2|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ CF_Gway_PSMDiagState : 3|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ CF_Gway_SJBDiagState : 4|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -599,5 +600,5 @@ VAL_ 3221225472 CF_Lvr_Gear 5 "D" 8 "S" 6 "N" 7 "R" 0 "P" ;
 VAL_ 3221225472 CF_VSM_Warn 2 "FCW" 3 "AEB" ;
 VAL_ 3221225472 ACCMode 0 "off" 1 "enabled" 2 "driver_override" 3 "off_maybe_fault" 4 "cancelled" ;
 VAL_ 3221225472 Elect_Gear_Shifter 5 "D" 8 "S" 6 "N" 7 "R" 0 "P" ;
-VAL_ 1513 CCM_ChargeProgess 127 "WeldingDetection" 63 "PowerDeliveryStop" 31 "CurrentDemand" 7 "PreCharge" 3 "CableCheck" ;
+VAL_ 1513 CCM_ChargeProgess 33 "PowerDeliveryStop_afterConLock" 15 "PowerDeliveryStart" 32 "PowerDeliveryStop_alone" 1 "ConnectorLocking" 127 "WeldingDetection" 63 "PowerDeliveryStop_afterCurrDem" 31 "CurrentDemand" 7 "PreCharge" 3 "CableCheck" ;
 
